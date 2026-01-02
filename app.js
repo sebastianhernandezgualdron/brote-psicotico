@@ -1,15 +1,13 @@
-import 'dotenv/config';
-import express from 'express';
 import {
-  ButtonStyleTypes,
   InteractionResponseFlags,
   InteractionResponseType,
   InteractionType,
   MessageComponentTypes,
-  verifyKeyMiddleware,
+  verifyKeyMiddleware
 } from 'discord-interactions';
-import { getRandomEmoji, DiscordRequest } from './utils.js';
-import { getShuffledOptions, getResult } from './game.js';
+import 'dotenv/config';
+import express from 'express';
+import { getRandomEmoji } from './utils.js';
 
 // Create an express app
 const app = express();
@@ -57,6 +55,31 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         },
       });
     }
+
+  if(name === 'osto') {
+    return res.send({
+      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+      data: {
+        flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+        components: [
+          {
+            type: MessageComponentTypes.TEXT_DISPLAY,
+            content: 'brote psicotico'
+          },
+          {
+            type: MessageComponentTypes.MEDIA_GALLERY,
+            items: [
+              {
+                media: {
+                  url: 'https://i.imgur.com/2kfj49O.jpeg'
+                }
+              }
+            ]
+          }
+        ]
+      },
+    });
+  }
 
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });
